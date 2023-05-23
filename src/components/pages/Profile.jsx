@@ -17,6 +17,7 @@ const ProfilePage = () => {
 
     const getProfile = useCallback(async () => {
         try {
+            //getting user profile details from firebase server
             const response = await axios.post(
                 "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
@@ -25,10 +26,22 @@ const ProfilePage = () => {
             );
             console.log(
                 response.data.users[0].displayName,
-                response.data.users[0].photoUrl
+                response.data.users[0].photoUrl,
+                response.data.users[0].emailVerified
             );
-            nameRef.current.value = response.data.users[0].displayName;
-            photoUrlRef.current.value = response.data.users[0].photoUrl;
+            //pre filling the user details
+            if (
+                response.data.users[0].displayName &&
+                response.data.users[0].photoUrl
+            ) {
+                nameRef.current.value = response.data.users[0].displayName;
+                photoUrlRef.current.value = response.data.users[0].photoUrl;
+            }
+            //setting isEmailVerified in local storage
+            localStorage.setItem(
+                "isEmailVerified",
+                response.data.users[0].emailVerified
+            );
         } catch (error) {
             console.log(error);
         }
@@ -54,7 +67,7 @@ const ProfilePage = () => {
         }
     };
 
-    const clickHandler = async (event) => {
+    const clickHandler = (event) => {
         event.preventDefault();
         const nameValue = nameRef.current.value;
         const photoUrlValue = photoUrlRef.current.value;
@@ -62,12 +75,33 @@ const ProfilePage = () => {
         updateProfile(nameValue, photoUrlValue);
     };
 
+    const verifyEmailHandler = async (event) => {
+        try {
+            event.preventDefault();
+            const response = await axios.post(
+                "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
+                {
+                    requestType: "VERIFY_EMAIL",
+                    idToken: authCtx.userToken,
+                }
+            );
+            console.log(response.data);
+            console.log("User Email Verified");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className='profile'>
             <p>Winners Never Quit, Quitters Never Win.</p>
             <hr />
             <Form>
-                <h3>Contact Details</h3>
+                <h3>User Details</h3>
+                <p>
+                    Email: {authCtx.email}
+                    <Button onClick={verifyEmailHandler}>Verify Email</Button>
+                </p>
                 <Row>
                     <Col>
                         <Form.Label>Full Name:</Form.Label>
