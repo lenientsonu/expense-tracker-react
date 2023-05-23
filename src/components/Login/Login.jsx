@@ -75,6 +75,11 @@ const Login = (props) => {
         }
     };
 
+    const forgotHandler = (event) => {
+        event.preventDefault();
+        history.replace("/forgot");
+    };
+
     return (
         <>
             <Form className='form' onSubmit={submitHandler}>
@@ -101,7 +106,12 @@ const Login = (props) => {
                 <Button variant='primary' type='submit'>
                     Login
                 </Button>
+                <br />
+                <Button className='forgot-btn' onClick={forgotHandler}>
+                    Forgot password?
+                </Button>
             </Form>
+
             <h3>
                 Don't have a Account?
                 <a href='/signup'> Sign Up</a>
