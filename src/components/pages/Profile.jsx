@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import Row from "react-bootstrap/Row";
@@ -14,6 +14,29 @@ const ProfilePage = () => {
     const nameRef = useRef();
     const photoUrlRef = useRef();
     const authCtx = useContext(AuthContext);
+
+    const getProfile = useCallback(async () => {
+        try {
+            const response = await axios.post(
+                "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
+                {
+                    idToken: authCtx.userToken,
+                }
+            );
+            console.log(
+                response.data.users[0].displayName,
+                response.data.users[0].photoUrl
+            );
+            nameRef.current.value = response.data.users[0].displayName;
+            photoUrlRef.current.value = response.data.users[0].photoUrl;
+        } catch (error) {
+            console.log(error);
+        }
+    }, [authCtx.userToken]);
+
+    useEffect(() => {
+        getProfile();
+    }, [getProfile]);
 
     const updateProfile = async (name, photo) => {
         try {
