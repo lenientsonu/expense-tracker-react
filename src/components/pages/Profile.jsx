@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import AuthContext from "../store/auth-context";
+import Logout from "../Login/Logout";
 
 import "./Profile.css";
 
@@ -95,6 +96,7 @@ const ProfilePage = () => {
     return (
         <div className='profile'>
             <p>Winners Never Quit, Quitters Never Win.</p>
+            <Logout />
             <hr />
             <Form>
                 <h3>User Details</h3>
