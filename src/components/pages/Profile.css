@@ -1,0 +1,28 @@
+.profile {
+    background: white;
+    font-size: 1.3rem;
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.profile p {
+    margin: 0;
+}
+
+.profile form {
+    text-align: center;
+}
+.profile form h3 {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+.profile form label {
+    font-size: 1.15rem;
+    margin: 1.5rem;
+    font-weight: bold;
+}
+.profile form button {
+    margin: 2rem;
+}

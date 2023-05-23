@@ -1,10 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { Client, Account } from "appwrite";
+import axios from "axios";
+// import { Client, Account } from "appwrite";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+
+import AuthContext from "../store/auth-context";
 
 import "./Login.css";
 
@@ -12,30 +15,51 @@ const Login = (props) => {
     const emailRef = useRef();
     const passRef = useRef();
     const history = useHistory();
+    const authCtx = useContext(AuthContext);
 
-    const client = new Client()
-        .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-        .setProject("64644013b01d7dac4717"); // Your project ID
+    //appwrite auth
+    // const client = new Client()
+    //     .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
+    //     .setProject("64644013b01d7dac4717"); // Your project ID
 
-    const account = new Account(client);
+    // const account = new Account(client);
 
+    // const authenticate = async (email, password) => {
+    //     const promise = account.createEmailSession(email, password);
+    //     promise.then(
+    //         function (response) {
+    //             console.log(response);
+    //             history.replace("/welcome");
+    //         },
+    //         function (error) {
+    //             alert(error);
+    //         }
+    //     );
+
+    //     //checking login(session stored in the localstorage)
+    //     // const check = account.get();
+    //     // check.then(function (response) {
+    //     //     console.log(response.email);
+    //     // });
+    // };
+
+    //firebase auth
     const authenticate = async (email, password) => {
-        const promise = account.createEmailSession(email, password);
-        promise.then(
-            function (response) {
-                console.log(response);
-                history.replace("/home");
-            },
-            function (error) {
-                alert(error);
-            }
-        );
-
-        //checking login(session stored in the localstorage)
-        // const check = account.get();
-        // check.then(function (response) {
-        //     console.log(response.email);
-        // });
+        try {
+            const response = await axios.post(
+                "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
+                {
+                    email: email,
+                    password: password,
+                    returnSecureToken: true,
+                }
+            );
+            console.log(response.data);
+            authCtx.login(response.data.idToken, email);
+            history.replace("/welcome");
+        } catch (error) {
+            alert(error.response.data.error.message);
+        }
     };
 
     const submitHandler = (event) => {
