@@ -9,24 +9,28 @@ const DUMMY_EXPENSES = [
         title: "Laptop Table",
         amount: 1800,
         date: new Date(2020, 7, 14),
+        category: "bills",
     },
     {
         id: "e2",
         title: "New TV",
         amount: 15000,
         date: new Date(2021, 2, 12),
+        category: "bills",
     },
     {
         id: "e3",
         title: "Car Insurance",
         amount: 2945,
         date: new Date(2021, 2, 28),
+        category: "petrol",
     },
     {
         id: "e4",
         title: "New Desk (Wooden)",
         amount: 4500,
         date: new Date(2021, 5, 12),
+        category: "bills",
     },
 ];
 
