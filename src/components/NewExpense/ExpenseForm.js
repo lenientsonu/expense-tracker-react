@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 import "./ExpenseForm.css";
 
@@ -24,6 +25,18 @@ const ExpenseForm = (props) => {
         setEnteredCategory(event.target.value);
     };
 
+    const saveToServer = async (expense) => {
+        try {
+            const response = await axios.post(
+                "https://expense-tracker-project-4272a-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json",
+                expense
+            );
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const submitHandler = (event) => {
         event.preventDefault();
 
@@ -34,7 +47,8 @@ const ExpenseForm = (props) => {
             category: enteredCategory,
         };
 
-        props.onSaveExpenseData(expenseData);
+        // props.onSaveExpenseData(expenseData);
+        saveToServer(expenseData);
         setEnteredTitle("");
         setEnteredAmount("");
         setEnteredDate("");
