@@ -13,8 +13,13 @@ const Expenses = (props) => {
             const response = await axios.get(
                 "https://expense-tracker-project-4272a-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
             );
-            console.log(Object.values(response.data));
-            setExpenses(Object.values(response.data));
+            const expensesArray = Object.keys(response.data).map((key) => {
+                return {
+                    id: key,
+                    ...response.data[key],
+                };
+            });
+            setExpenses(expensesArray);
         } catch (error) {
             console.log(error);
         }

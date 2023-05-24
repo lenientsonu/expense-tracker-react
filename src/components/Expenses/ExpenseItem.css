@@ -35,6 +35,14 @@
   border-radius: 12px;
 }
 
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #ff4444;
+}
+
 @media (min-width: 580px) {
   .expense-item__description {
     flex-direction: row;

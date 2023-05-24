@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-import "./ExpenseForm.css";
+import "./EditForm.css";
 
 const ExpenseForm = (props) => {
-    const [enteredTitle, setEnteredTitle] = useState("");
-    const [enteredAmount, setEnteredAmount] = useState("");
-    const [enteredCategory, setEnteredCategory] = useState("");
+    const [enteredTitle, setEnteredTitle] = useState(props.title);
+    const [enteredAmount, setEnteredAmount] = useState(props.amount);
+    const [enteredCategory, setEnteredCategory] = useState(props.category);
 
     const titleChangeHandler = (event) => {
         setEnteredTitle(event.target.value);
@@ -20,10 +20,10 @@ const ExpenseForm = (props) => {
         setEnteredCategory(event.target.value);
     };
 
-    const saveToServer = async (expense) => {
+    const updateOnServer = async (expense) => {
         try {
-            const response = await axios.post(
-                "https://expense-tracker-project-4272a-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json",
+            const response = await axios.put(
+                `https://expense-tracker-project-4272a-default-rtdb.asia-southeast1.firebasedatabase.app/expenses/${props.id}.json`,
                 expense
             );
             console.log(response.data);
@@ -41,8 +41,7 @@ const ExpenseForm = (props) => {
             category: enteredCategory,
         };
 
-        // props.onSaveExpenseData(expenseData);
-        saveToServer(expenseData);
+        updateOnServer(expenseData);
         setEnteredTitle("");
         setEnteredAmount("");
         setEnteredCategory("");
@@ -87,7 +86,7 @@ const ExpenseForm = (props) => {
                 <button type='button' onClick={props.onCancel}>
                     Cancel
                 </button>
-                <button type='submit'>Add Expense</button>
+                <button type='submit'>Update Expense</button>
             </div>
         </form>
     );
