@@ -1,12 +1,13 @@
-import React, { useRef, useContext, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import AuthContext from "../store/auth-context";
+import { useSelector } from "react-redux";
 import Logout from "../Login/Logout";
 
 import "./Profile.css";
@@ -14,7 +15,8 @@ import "./Profile.css";
 const ProfilePage = () => {
     const nameRef = useRef();
     const photoUrlRef = useRef();
-    const authCtx = useContext(AuthContext);
+    const userToken = useSelector((state) => state.auth.userToken);
+    const email = useSelector((state) => state.auth.email);
 
     const getProfile = useCallback(async () => {
         try {
@@ -22,7 +24,7 @@ const ProfilePage = () => {
             const response = await axios.post(
                 "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
-                    idToken: authCtx.userToken,
+                    idToken: userToken,
                 }
             );
             console.log(
@@ -46,7 +48,7 @@ const ProfilePage = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [authCtx.userToken]);
+    }, [userToken]);
 
     useEffect(() => {
         getProfile();
@@ -57,7 +59,7 @@ const ProfilePage = () => {
             const response = await axios.post(
                 "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
-                    idToken: authCtx.userToken,
+                    idToken: userToken,
                     displayName: name,
                     photoUrl: photo,
                 }
@@ -83,7 +85,7 @@ const ProfilePage = () => {
                 "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
                     requestType: "VERIFY_EMAIL",
-                    idToken: authCtx.userToken,
+                    idToken: userToken,
                 }
             );
             console.log(response.data);
@@ -101,7 +103,7 @@ const ProfilePage = () => {
             <Form>
                 <h3>User Details</h3>
                 <p>
-                    Email: {authCtx.email}
+                    Email: {email}
                     <Button onClick={verifyEmailHandler}>Verify Email</Button>
                 </p>
                 <Row>
@@ -115,7 +117,7 @@ const ProfilePage = () => {
                         <Button type='submit' onClick={clickHandler}>
                             Update
                         </Button>
-                        <Button type='submit'>Cancel</Button>
+                        <Link to='/welcome'>Cancel</Link>
                     </Col>
                 </Row>
             </Form>

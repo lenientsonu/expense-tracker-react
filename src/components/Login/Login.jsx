@@ -1,13 +1,13 @@
-import React, { useRef, useContext } from "react";
+import { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-// import { Client, Account } from "appwrite";
+
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authSlice";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-
-import AuthContext from "../store/auth-context";
 
 import "./Login.css";
 
@@ -15,33 +15,7 @@ const Login = (props) => {
     const emailRef = useRef();
     const passRef = useRef();
     const history = useHistory();
-    const authCtx = useContext(AuthContext);
-
-    //appwrite auth
-    // const client = new Client()
-    //     .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-    //     .setProject("64644013b01d7dac4717"); // Your project ID
-
-    // const account = new Account(client);
-
-    // const authenticate = async (email, password) => {
-    //     const promise = account.createEmailSession(email, password);
-    //     promise.then(
-    //         function (response) {
-    //             console.log(response);
-    //             history.replace("/welcome");
-    //         },
-    //         function (error) {
-    //             alert(error);
-    //         }
-    //     );
-
-    //     //checking login(session stored in the localstorage)
-    //     // const check = account.get();
-    //     // check.then(function (response) {
-    //     //     console.log(response.email);
-    //     // });
-    // };
+    const dispatch = useDispatch();
 
     //firebase auth
     const authenticate = async (email, password) => {
@@ -55,7 +29,12 @@ const Login = (props) => {
                 }
             );
             console.log(response.data);
-            authCtx.login(response.data.idToken, email);
+            dispatch(
+                authActions.login({
+                    token: response.data.idToken,
+                    email: email,
+                })
+            );
             history.replace("/welcome");
         } catch (error) {
             alert(error.response.data.error.message);

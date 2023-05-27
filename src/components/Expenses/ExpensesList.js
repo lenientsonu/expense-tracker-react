@@ -1,16 +1,18 @@
-import React from "react";
+import { useSelector } from "react-redux";
 
 import ExpenseItem from "./ExpenseItem";
 import "./ExpensesList.css";
 
 const ExpensesList = (props) => {
-    if (props.items.length === 0) {
+    const expenses = useSelector((state) => state.expenses.expenses);
+
+    if (expenses.length === 0) {
         return <h2 className='expenses-list__fallback'>Found no expenses.</h2>;
     }
 
     return (
         <ul className='expenses-list'>
-            {props.items.map((expense) => (
+            {expenses.map((expense) => (
                 <ExpenseItem
                     key={expense.id}
                     id={expense.id}

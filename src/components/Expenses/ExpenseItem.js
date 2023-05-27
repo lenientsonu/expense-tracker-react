@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { expenseActions } from "../../store/expenseSlice";
 
 import EditForm from "./EditForm";
 
@@ -7,6 +10,7 @@ import Card from "../UI/Card";
 import "./ExpenseItem.css";
 
 const ExpenseItem = (props) => {
+    const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
 
     const startEditingHandler = () => {
@@ -32,6 +36,7 @@ const ExpenseItem = (props) => {
     const deleteExpenseHandler = (event) => {
         event.preventDefault();
         deleteFromServer(props.id);
+        dispatch(expenseActions.removeExpense(props.id));
     };
 
     const editExpenseHandler = (event) => {

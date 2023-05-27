@@ -1,7 +1,30 @@
 .expenses {
-  padding: 1rem;
-  background-color: rgb(31, 31, 31);
-  margin: 2rem auto;
-  width: 50rem;
-  max-width: 95%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: rgb(31, 31, 31);
+    margin: 2rem auto;
+    width: 50rem;
+    max-width: 95%;
+}
+
+.premium-btn {
+    text-align: center;
+    margin: auto;
+    background-color: #f2b705;
+    max-width: fit-content;
+    padding: 0 1rem;
+}
+.premium-btn:hover {
+    background-color: #f29f05;
+}
+
+.total {
+    color: white;
+    margin-left: auto;
+    background-color: #4b4b4b;
+    max-width: fit-content;
+}
+.total h1 {
+    padding: 0 1rem;
 }

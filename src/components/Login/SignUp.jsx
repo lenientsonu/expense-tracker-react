@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-// import { Client, Account, ID } from "appwrite";
 import axios from "axios";
 
 import Button from "react-bootstrap/Button";
@@ -12,27 +11,6 @@ const SignUp = (props) => {
     const emailRef = useRef();
     const passRef = useRef();
     const cnfrmPassRef = useRef();
-
-    //auth for appwrite
-    // const client = new Client()
-    //     .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-    //     .setProject("64644013b01d7dac4717"); // Your project ID
-
-    // const account = new Account(client);
-
-    // const saveToServer = (email, password) => {
-    //     const promise = account.create(ID.unique(), email, password);
-
-    //     promise.then(
-    //         function (response) {
-    //             console.log(response);
-    //             console.log("User has successfully signed up");
-    //         },
-    //         function (error) {
-    //             console.log(error);
-    //         }
-    //     );
-    // };
 
     //auth for firebase
     const saveToServer = async (email, password) => {

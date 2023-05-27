@@ -1,18 +1,18 @@
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
-import AuthContext from "../store/auth-context";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authSlice";
 
 import "./Logout.css";
 
 const Logout = () => {
     const history = useHistory();
-    const authCtx = useContext(AuthContext);
+    const dispatch = useDispatch();
 
     const clickHandler = (event) => {
         event.preventDefault();
-        authCtx.logout();
+        dispatch(authActions.logout());
         history.replace("/login");
     };
 

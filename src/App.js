@@ -1,4 +1,5 @@
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Homepage from "./components/pages/Home";
 import SignUp from "./components/Login/SignUp";
@@ -8,20 +9,26 @@ import WelcomePage from "./components/pages/Welcome";
 import ProfilePage from "./components/pages/Profile";
 
 const App = () => {
+    const isAuth = useSelector((state) => state.auth.isLoggedIn);
+
     return (
         <div>
             <Switch>
                 <Route path='/' exact>
-                    <Login />
+                    {isAuth && <Redirect to='/welcome' />}
+                    {!isAuth && <Login />}
                 </Route>
                 <Route path='/welcome'>
-                    <WelcomePage />
+                    {isAuth && <WelcomePage />}
+                    {!isAuth && <Redirect to='/login' />}
                 </Route>
-                <Route path="/profile">
-                    <ProfilePage />
+                <Route path='/profile'>
+                    {isAuth && <ProfilePage />}
+                    {!isAuth && <Redirect to='/login' />}
                 </Route>
                 <Route path='/home'>
-                    <Homepage />
+                    {isAuth && <Homepage />}
+                    {!isAuth && <Redirect to='/login' />}
                 </Route>
                 <Route path='/signup'>
                     <SignUp />

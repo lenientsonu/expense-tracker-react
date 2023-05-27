@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-// import { Link } from "react-router-dom";
 import Logout from "../Login/Logout";
 
 import "./Welcome.css";
@@ -18,7 +19,7 @@ const WelcomePage = () => {
                 <Col>
                     <span>
                         Your Profile is Incomplete.
-                        <a href='/profile'> Complete Now</a>
+                        <Link to='/profile'> Complete Now</Link>
                     </span>
                 </Col>
             </Row>
@@ -27,6 +28,11 @@ const WelcomePage = () => {
                     <Logout />
                 </Col>
             </Row>
+            <Col>
+                <Link className='home-btn' to='/home'>
+                    Go to Expense Tracker
+                </Link>
+            </Col>
         </Container>
     );
 };

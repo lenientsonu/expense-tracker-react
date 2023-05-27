@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { expenseActions } from "../../store/expenseSlice";
 
 import "./EditForm.css";
 
 const ExpenseForm = (props) => {
+    const dispatch = useDispatch();
     const [enteredTitle, setEnteredTitle] = useState(props.title);
     const [enteredAmount, setEnteredAmount] = useState(props.amount);
     const [enteredCategory, setEnteredCategory] = useState(props.category);
@@ -27,6 +31,12 @@ const ExpenseForm = (props) => {
                 expense
             );
             console.log(response.data);
+            dispatch(
+                expenseActions.editExpense({
+                    id: props.id,
+                    ...expense,
+                })
+            );
         } catch (error) {
             console.log(error);
         }
@@ -45,6 +55,7 @@ const ExpenseForm = (props) => {
         setEnteredTitle("");
         setEnteredAmount("");
         setEnteredCategory("");
+        props.onCancel();
     };
 
     return (

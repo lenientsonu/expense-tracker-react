@@ -8,16 +8,46 @@
 }
 
 .welcome p {
-    margin: .5rem;
+    margin: 0.5rem;
     /* margin: 0; */
 }
 
 .welcome span {
     background-color: lightpink;
     padding: 2rem;
-    margin: .5rem;
+    margin: 0.5rem;
     border-radius: 3rem;
 }
 .welcome span a {
     text-decoration: none;
+}
+
+.home-btn {
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border: 1px solid #40005d;
+    background-color: #40005d;
+    color: white;
+    border-radius: 12px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.home-btn:hover,
+.home-btn:active {
+    background-color: #510674;
+    border-color: #510674;
+}
+
+.home-btn.alternative {
+    color: #220131;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.home-btn.alternative:hover,
+.home-btn.alternative:active {
+    background-color: #ddb3f8;
 }

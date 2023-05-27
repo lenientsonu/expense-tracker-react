@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { expenseActions } from "../../store/expenseSlice";
 
 import "./ExpenseForm.css";
 
 const ExpenseForm = (props) => {
+    const dispatch = useDispatch();
     const [enteredTitle, setEnteredTitle] = useState("");
     const [enteredAmount, setEnteredAmount] = useState("");
-    const [enteredCategory, setEnteredCategory] = useState("");
+    const [enteredCategory, setEnteredCategory] = useState("food");
 
     const titleChangeHandler = (event) => {
         setEnteredTitle(event.target.value);
@@ -26,7 +30,12 @@ const ExpenseForm = (props) => {
                 "https://expense-tracker-project-4272a-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json",
                 expense
             );
-            console.log(response.data);
+            dispatch(
+                expenseActions.addExpense({
+                    id: response.data.name,
+                    ...expense,
+                })
+            );
         } catch (error) {
             console.log(error);
         }
