@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
@@ -12,6 +12,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "./Login.css";
 
 const Login = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
     const emailRef = useRef();
     const passRef = useRef();
     const history = useHistory();
@@ -20,6 +21,7 @@ const Login = (props) => {
     //firebase auth
     const authenticate = async (email, password) => {
         try {
+            setIsLoading(true);
             const response = await axios.post(
                 "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
@@ -38,6 +40,8 @@ const Login = (props) => {
             history.replace("/welcome");
         } catch (error) {
             alert(error.response.data.error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -82,8 +86,8 @@ const Login = (props) => {
                     />
                 </FloatingLabel>
 
-                <Button variant='primary' type='submit'>
-                    Login
+                <Button type='submit' disabled={isLoading}>
+                    {isLoading ? "Logging In" : "Login"}
                 </Button>
                 <br />
                 <Button className='forgot-btn' onClick={forgotHandler}>

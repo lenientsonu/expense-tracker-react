@@ -1,22 +1,26 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+import { authActions } from "../../store/authSlice";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import { useSelector } from "react-redux";
-import Logout from "../Login/Logout";
+import Header from "../Layout/Header";
 
 import "./Profile.css";
 
 const ProfilePage = () => {
+    const dispatch = useDispatch();
     const nameRef = useRef();
     const photoUrlRef = useRef();
     const userToken = useSelector((state) => state.auth.userToken);
     const email = useSelector((state) => state.auth.email);
+    const isEmailVerified = useSelector((state) => state.auth.isEmailVerified);
 
     const getProfile = useCallback(async () => {
         try {
@@ -40,15 +44,14 @@ const ProfilePage = () => {
                 nameRef.current.value = response.data.users[0].displayName;
                 photoUrlRef.current.value = response.data.users[0].photoUrl;
             }
-            //setting isEmailVerified in local storage
-            localStorage.setItem(
-                "isEmailVerified",
-                response.data.users[0].emailVerified
+            //setting isEmailVerified in store
+            dispatch(
+                authActions.verifyEmail(response.data.users[0].emailVerified)
             );
         } catch (error) {
             console.log(error);
         }
-    }, [userToken]);
+    }, [userToken, dispatch]);
 
     useEffect(() => {
         getProfile();
@@ -96,32 +99,47 @@ const ProfilePage = () => {
     };
 
     return (
-        <div className='profile'>
-            <p>Winners Never Quit, Quitters Never Win.</p>
-            <Logout />
-            <hr />
-            <Form>
-                <h3>User Details</h3>
-                <p>
-                    Email: {email}
-                    <Button onClick={verifyEmailHandler}>Verify Email</Button>
-                </p>
-                <Row>
-                    <Col>
-                        <Form.Label>Full Name:</Form.Label>
-                        <Form.Control placeholder='' ref={nameRef} />
-                        <Form.Label>Profile Photo URL:</Form.Label>
-                        <Form.Control placeholder='' ref={photoUrlRef} />
-                    </Col>
-                    <Col>
-                        <Button type='submit' onClick={clickHandler}>
-                            Update
-                        </Button>
-                        <Link to='/welcome'>Cancel</Link>
-                    </Col>
-                </Row>
-            </Form>
-        </div>
+        <>
+            <header>
+                <Header />
+            </header>
+            <main>
+                <div className='profile'>
+                    <p>Winners Never Quit, Quitters Never Win.</p>
+                    <hr />
+                    <Form>
+                        <h3>User Details</h3>
+                        <p>
+                            Email: {email}
+                            {isEmailVerified ? (
+                                <Button disabled>Verified</Button>
+                            ) : (
+                                <Button onClick={verifyEmailHandler}>
+                                    Verify Email
+                                </Button>
+                            )}
+                        </p>
+                        <Row>
+                            <Col>
+                                <Form.Label>Full Name:</Form.Label>
+                                <Form.Control placeholder='' ref={nameRef} />
+                                <Form.Label>Profile Photo URL:</Form.Label>
+                                <Form.Control
+                                    placeholder=''
+                                    ref={photoUrlRef}
+                                />
+                            </Col>
+                            <Col>
+                                <Button type='submit' onClick={clickHandler}>
+                                    Update
+                                </Button>
+                                <Link to='/welcome'>Cancel</Link>
+                            </Col>
+                        </Row>
+                    </Form>
+                </div>
+            </main>
+        </>
     );
 };
 

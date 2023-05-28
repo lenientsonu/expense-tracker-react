@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -9,6 +9,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "./SignUp.css";
 
 const SignUp = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
     const emailRef = useRef();
     const passRef = useRef();
@@ -17,6 +18,7 @@ const SignUp = (props) => {
     //auth for firebase
     const saveToServer = async (email, password) => {
         try {
+            setIsLoading(true);
             const response = await axios.post(
                 "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
@@ -26,13 +28,17 @@ const SignUp = (props) => {
                 }
             );
             console.log(response.data);
-            alert("User has successfully signed up");
             history.replace("/login");
         } catch (error) {
-            // alert(error.message);
             alert("Something Went Wrong");
+        } finally {
+            setIsLoading(false);
         }
     };
+
+    // useEffect(() => {
+    //     console.log(isLoading);
+    // }, [isLoading]);
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -81,8 +87,8 @@ const SignUp = (props) => {
                         ref={cnfrmPassRef}
                     />
                 </FloatingLabel>
-                <Button variant='primary' type='submit'>
-                    Sign Up
+                <Button type='submit' disabled={isLoading}>
+                    {isLoading ? "Loading" : "Sign Up"}
                 </Button>
             </Form>
             <h3>

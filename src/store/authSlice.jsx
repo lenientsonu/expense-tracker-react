@@ -4,6 +4,7 @@ const initialAuthState = {
     isLoggedIn: localStorage.getItem("token") !== null,
     userToken: localStorage.getItem("token"),
     email: localStorage.getItem("email"),
+    isEmailVerified: false,
 };
 
 const authSlice = createSlice({
@@ -23,6 +24,9 @@ const authSlice = createSlice({
             state.email = "";
             localStorage.removeItem("token");
             localStorage.removeItem("email");
+        },
+        verifyEmail(state, action) {
+            state.isEmailVerified = action.payload;
         },
     },
 });
