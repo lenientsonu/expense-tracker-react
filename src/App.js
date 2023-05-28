@@ -8,11 +8,14 @@ import Forgot from "./components/Login/Forgot";
 import WelcomePage from "./components/pages/Welcome";
 import ProfilePage from "./components/pages/Profile";
 
+import "./App.css";
+
 const App = () => {
     const isAuth = useSelector((state) => state.auth.isLoggedIn);
+    const isDark = useSelector((state) => state.premium.isDark);
 
     return (
-        <div>
+        <div className={isDark ? "dark" : "light"}>
             <Switch>
                 <Route path='/' exact>
                     {isAuth && <Redirect to='/welcome' />}

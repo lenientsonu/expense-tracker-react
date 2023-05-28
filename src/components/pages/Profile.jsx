@@ -34,7 +34,7 @@ const ProfilePage = () => {
             );
             //pre filling the user details
             if (
-                response.data.users[0].displayName &&
+                response.data.users[0].displayName ||
                 response.data.users[0].photoUrl
             ) {
                 nameRef.current.value = response.data.users[0].displayName;

@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -8,6 +9,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "./SignUp.css";
 
 const SignUp = (props) => {
+    const history = useHistory();
     const emailRef = useRef();
     const passRef = useRef();
     const cnfrmPassRef = useRef();
@@ -24,9 +26,11 @@ const SignUp = (props) => {
                 }
             );
             console.log(response.data);
-            console.log("User has successfully signed up");
+            alert("User has successfully signed up");
+            history.replace("/login");
         } catch (error) {
-            console.log(error);
+            // alert(error.message);
+            alert("Something Went Wrong");
         }
     };
 

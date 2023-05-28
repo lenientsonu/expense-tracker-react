@@ -44,17 +44,20 @@ const ExpenseForm = (props) => {
     const submitHandler = (event) => {
         event.preventDefault();
 
-        const expenseData = {
-            title: enteredTitle,
-            amount: +enteredAmount,
-            category: enteredCategory,
-        };
+        if (enteredTitle && enteredAmount && enteredCategory) {
+            const expenseData = {
+                title: enteredTitle,
+                amount: +enteredAmount,
+                category: enteredCategory,
+            };
 
-        // props.onSaveExpenseData(expenseData);
-        saveToServer(expenseData);
-        setEnteredTitle("");
-        setEnteredAmount("");
-        setEnteredCategory("");
+            saveToServer(expenseData);
+            setEnteredTitle("");
+            setEnteredAmount("");
+            setEnteredCategory("");
+        } else {
+            alert("Enter All the fields");
+        }
     };
 
     return (

@@ -10,10 +10,11 @@
 
 .premium-btn {
     text-align: center;
+    font-size: 1.3rem;
     margin: auto;
     background-color: #f2b705;
     max-width: fit-content;
-    padding: 0 1rem;
+    padding: 1rem;
 }
 .premium-btn:hover {
     background-color: #f29f05;
@@ -27,4 +28,20 @@
 }
 .total h1 {
     padding: 0 1rem;
+}
+
+.theme-toggle {
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1rem;
+}
+.theme-toggle h2 {
+    margin-right: 1rem;
+}
+
+.features {
+    display: flex;
+    justify-content: space-between;
 }
