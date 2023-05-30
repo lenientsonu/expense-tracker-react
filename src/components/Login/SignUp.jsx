@@ -1,24 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
+import Notification from "../UI/Notification";
+import { uiActions } from "../../store/uiSlice";
+
 import "./SignUp.css";
 
 const SignUp = (props) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const history = useHistory();
+    const dispatch = useDispatch();
     const emailRef = useRef();
     const passRef = useRef();
     const cnfrmPassRef = useRef();
+    const notification = useSelector((state) => state.ui.notification);
 
     //auth for firebase
     const saveToServer = async (email, password) => {
         try {
-            setIsLoading(true);
+            dispatch(
+                uiActions.showNotification({
+                    status: "pending",
+                    title: "Pending",
+                    message: "Creating your account",
+                })
+            );
             const response = await axios.post(
                 "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDmaC9PUexvjOMQr2wvhteHn23kFPTmuj0",
                 {
@@ -28,17 +37,27 @@ const SignUp = (props) => {
                 }
             );
             console.log(response.data);
-            history.replace("/login");
+            dispatch(
+                uiActions.showNotification({
+                    status: "success",
+                    title: "Success!",
+                    message: "Created your account successfully",
+                })
+            );
         } catch (error) {
-            alert("Something Went Wrong");
+            dispatch(
+                uiActions.showNotification({
+                    status: "error",
+                    title: "Error!",
+                    message: error.response.data.error.message,
+                })
+            );
         } finally {
-            setIsLoading(false);
+            setTimeout(() => {
+                dispatch(uiActions.hideNotification());
+            }, 2000);
         }
     };
-
-    // useEffect(() => {
-    //     console.log(isLoading);
-    // }, [isLoading]);
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -60,6 +79,13 @@ const SignUp = (props) => {
 
     return (
         <>
+            {notification && (
+                <Notification
+                    status={notification.status}
+                    title={notification.title}
+                    message={notification.message}
+                />
+            )}
             <Form className='form' onSubmit={submitHandler}>
                 <h2>Sign Up</h2>
                 <FloatingLabel
@@ -87,8 +113,8 @@ const SignUp = (props) => {
                         ref={cnfrmPassRef}
                     />
                 </FloatingLabel>
-                <Button type='submit' disabled={isLoading}>
-                    {isLoading ? "Loading" : "Sign Up"}
+                <Button type='submit' disabled={notification}>
+                    {notification ? "Loading" : "Sign Up"}
                 </Button>
             </Form>
             <h3>

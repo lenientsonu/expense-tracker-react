@@ -133,7 +133,7 @@ const ProfilePage = () => {
                                 <Button type='submit' onClick={clickHandler}>
                                     Update
                                 </Button>
-                                <Link to='/welcome'>Cancel</Link>
+                                <Link to='/home'>Cancel</Link>
                             </Col>
                         </Row>
                     </Form>
